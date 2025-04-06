@@ -5,7 +5,7 @@ import '../App.css';
 const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
-      <h2>Welcome to the Dashboard</h2>
+      <h2>Lisette Melo Reyes</h2>
 
       <div className="button">
         <button onClick={() => window.location.href = '/src/class1/L03535511/index.html'}>

@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const data = await fetchData('https://jsonplaceholder.typicode.com/posts');
     const container = document.getElementById('posts-container');
-    container.style.maxWidth = '800px'; // para que no se extienda tanto
+    container.style.maxWidth = '800px'; 
     container.style.marginTop = '20px';
 
     data.forEach(({ title, body }) => {
