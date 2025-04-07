@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Clase2 from './class2/A01028066/components/ejemplo';
+import Clase2 from './class2/A01028066/ejemplo';
 import Dashboard from './pages/Dashboard';
 import LoginPage from './pages/LoginPage';
 import { useState } from 'react';
