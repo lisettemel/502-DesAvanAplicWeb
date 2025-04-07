@@ -1,4 +1,3 @@
-// src/class2/components/reusableInputField.tsx
 import React from 'react';
 import styled from 'styled-components';
 

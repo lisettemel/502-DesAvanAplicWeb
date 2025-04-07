@@ -1,72 +1,105 @@
-// src/class2/A01028066/components/ejemplo.tsx
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
+import '../../App.css'; 
+
+// Define la estructura del estado que maneja useReducer
+interface State {
+  username: string;
+  email: string;
+  showCard: boolean;
+}
+
+// Estado inicial para el formulario
+const initialState: State = {
+  username: '',
+  email: '',
+  showCard: false,
+};
+
+// Función reductora que actualiza el estado según la acción recibida
+function reducer(state: State, action: { type: string; payload?: string }): State {
+  switch (action.type) {
+    case 'SET_USERNAME': // Actualiza el nombre de usuario
+      return { ...state, username: action.payload || '' };
+    case 'SET_EMAIL': // Actualiza el correo electrónico
+      return { ...state, email: action.payload || '' };
+    case 'SHOW_CARD': // Muestra la tarjeta con los datos
+      return { ...state, showCard: true };
+    default:
+      return state; // Si no reconoce la acción, devuelve el mismo estado
+  }
+}
+
+// Función para validar el formato del correo electrónico
+const isValidEmail = (email: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 const EjemploPage: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [showCard, setShowCard] = useState(false);
+  // useReducer para manejar el estado del formulario
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const isValidEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
-
+  // Manejador del botón "Mostrar Datos"
   const handleClick = () => {
-    if (!username.trim() || !email.trim()) {
+    // Verifica que ambos campos estén llenos
+    if (!state.username.trim() || !state.email.trim()) {
       alert('Por favor completa todos los campos.');
       return;
     }
-    if (!isValidEmail(email)) {
+    // Verifica que el correo sea válido
+    if (!isValidEmail(state.email)) {
       alert('Por favor ingresa un correo electrónico válido.');
       return;
     }
-    setShowCard(true);
+    // Muestra la tarjeta con los datos
+    dispatch({ type: 'SHOW_CARD' });
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#eaf0ed] text-gray-800 px-4">
-      <h1 className="text-3xl font-bold mb-6">Reusable Components Demo</h1>
+    <div className="container">
+      <h1>Demo: Solicitud de Viaje</h1>
 
-      <div className="w-full max-w-sm space-y-4">
-        <div className="flex flex-col">
-          <label className="text-sm text-gray-600 mb-1">Nombre de usuario</label>
-          <input
-            type="text"
-            placeholder="Ej. lisette123"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
-          />
-        </div>
+      {/* Campo de entrada para nombre de usuario */}
+      <input
+        type="text"
+        placeholder="Ej. usuario123"
+        value={state.username}
+        onChange={(e) =>
+          dispatch({ type: 'SET_USERNAME', payload: e.target.value })
+        }
+        className="input"
+      />
 
-        <div className="flex flex-col">
-          <label className="text-sm text-gray-600 mb-1">Correo electrónico</label>
-          <input
-            type="email"
-            placeholder="Ej. correo@ejemplo.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
-          />
-        </div>
+      {/* Campo de entrada para correo electrónico */}
+      <input
+        type="email"
+        placeholder="Ej. correo@ejemplo.com"
+        value={state.email}
+        onChange={(e) =>
+          dispatch({ type: 'SET_EMAIL', payload: e.target.value })
+        }
+        className="input"
+      />
 
-        <button
-          onClick={handleClick}
-          className="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded w-full"
+      {/* Botón que muestra la tarjeta con los datos */}
+      <button onClick={handleClick}>Mostrar Datos</button>
+
+      {/* Si showCard es true, se muestra la tarjeta */}
+      {state.showCard && (
+        <div
+          className="dashboard"
+          onClick={() => console.log('Card clicked')}
         >
-          Mostrar Datos
-        </button>
-
-        {showCard && (
-          <div
-            className="bg-white rounded-lg shadow-md p-4 border border-gray-200 transition hover:shadow-lg cursor-pointer"
-            onClick={() => console.log('Card clicked')}
-          >
-            <h2 className="text-xl font-bold text-green-900">Viaje de {username}</h2>
-            <p className="text-gray-600">Email: {email}</p>
-            <p className="text-sm text-gray-500">Fecha: {new Date().toLocaleDateString()}</p>
-          </div>
-        )}
-      </div>
+          <h2>Solicitud de viaje</h2>
+          <p>
+            <strong>Usuario:</strong> {state.username}
+          </p>
+          <p>
+            <strong>Correo:</strong> {state.email}
+          </p>
+          <p>
+            <strong>Fecha:</strong> {new Date().toLocaleDateString()}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
