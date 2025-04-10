@@ -1,4 +1,4 @@
-import { fetchData } from './utils/api.js';
+import { fetchData } from './utils/api.tsx';
 
 // Espera a que todo el contenido del DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', async () => {
